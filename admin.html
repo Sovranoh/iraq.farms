@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المزارع</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f8fafc; color: #334155; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { color: #1e293b; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .back-link { font-size: 14px; background: #e2e8f0; color: #334155; padding: 6px 12px; border-radius: 6px; text-decoration: none; }
+        
+        .farm-edit-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #475569; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+        
+        .save-btn { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .save-btn:hover { background: #059669; }
+        .alert { background: #d1fae5; color: #065f46; padding: 10px; border-radius: 6px; margin-bottom: 15px; display: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>
+        <span>⚙️ إدارة وتحديث المزارع</span>
+        <a href="index.html" class="back-link">← عرض الموقع الرئيسي</a>
+    </h2>
+
+    <div class="alert" id="successAlert">تم حفظ التحديثات بنجاح وزيادة تفاصيل المزرعة!</div>
+
+    <div id="adminFarmsContainer">
+        <!-- يتم جلب حقول التعديل برمجياً -->
+    </div>
+</div>
+
+<script>
+    const defaultFarms = [
+        {
+            id: 1,
+            name: "مزرعة الواحة الخضراء",
+            desc: "مساحة واسعة، مسبح مغطى، قاعات مكيفة مجهزة بالكامل، ومناطق ترفيهية للأطفال.",
+            price: "150000",
+            status: "available",
+            image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80",
+            features: ["مسبح مغطى", "قاعة مكيفة", "شواء خارجي"]
+        },
+        {
+            id: 2,
+            name: "مزرعة النخيل الفاخرة",
+            desc: "تصميم حديث، مساحات خضراء شاسعة، إضاءة ليلية مميزة، وأجواء عائلية هادئة.",
+            price: "200000",
+            status: "booked",
+            image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
+            features: ["مساحات شاسعة", "ألعاب أطفال", "جلسات نارية"]
+        }
+    ];
+
+    function loadAdminPanel() {
+        let farms = JSON.parse(localStorage.getItem('myFarms')) || defaultFarms;
+        let container = document.getElementById('adminFarmsContainer');
+        container.innerHTML = '';
+
+        farms.forEach((farm, index) => {
+            let box = document.createElement('div');
+            box.className = 'farm-edit-box';
+            box.innerHTML = `
+                <h3>تعديل: ${farm.name}</h3>
+                <div class="form-group" style="margin-top:10px;">
+                    <label>حالة المزرعة:</label>
+                    <select id="status_${index}">
+                        <option value="available" ${farm.status === 'available' ? 'selected' : ''}>🟢 متوفرة للحجز</option>
+                        <option value="booked" ${farm.status === 'booked' ? 'selected' : ''}>🔴 محجوزة بالكامل</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>اسم المزرعة:</label>
+                    <input type="text" id="name_${index}" value="${farm.name}">
+                </div>
+                <div class="form-group">
+                    <label>السعر اليومي (د.ع):</label>
+                    <input type="text" id="price_${index}" value="${farm.price}">
+                </div>
+                <div class="form-group">
+                    <label>رابط الصورة (URL):</label>
+                    <input type="text" id="image_${index}" value="${farm.image}">
+                </div>
+                <div class="form-group">
+                    <label>الوصف التفصيلي:</label>
+                    <textarea id="desc_${index}" rows="2">${farm.desc}</textarea>
+                </div>
+                <button class="save-btn" onclick="saveFarm(${index})">حفظ التعديلات</button>
+            `;
+            container.appendChild(box);
+        });
+    }
+
+    function saveFarm(index) {
+        let farms = JSON.parse(localStorage.getItem('myFarms')) || defaultFarms;
+        
+        farms[index].name = document.getElementById(`name_${index}`).value;
+        farms[index].price = document.getElementById(`price_${index}`).value;
+        farms[index].status = document.getElementById(`status_${index}`).value;
+        farms[index].image = document.getElementById(`image_${index}`).value;
+        farms[index].desc = document.getElementById(`desc_${index}`).value;
+
+        localStorage.setItem('myFarms', JSON.stringify(farms));
+
+        let alertBox = document.getElementById('successAlert');
+        alertBox.style.display = 'block';
+        setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+    }
+
+    window.onload = loadAdminPanel;
+</script>
+
+</body>
+</html>
