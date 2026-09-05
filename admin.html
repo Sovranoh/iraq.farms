@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم المزارع</title>
+    <title>لوحة التحكم المحمية</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f8fafc; color: #334155; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
+        /* شاشة تسجيل الدخول لحماية الأدمن */
+        #loginScreen { text-align: center; padding: 40px 0; }
+        #loginScreen input { padding: 10px; width: 250px; border: 1px solid #cbd5e1; border-radius: 6px; margin-bottom: 10px; font-size: 16px; text-align: center; }
+        #loginScreen button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        
+        #adminPanel { display: none; }
         h2 { color: #1e293b; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
         .back-link { font-size: 14px; background: #e2e8f0; color: #334155; padding: 6px 12px; border-radius: 6px; text-decoration: none; }
         
@@ -24,37 +31,68 @@
 <body>
 
 <div class="container">
-    <h2>
-        <span>⚙️ إدارة وتحديث المزارع</span>
-        <a href="index.html" class="back-link">← عرض الموقع الرئيسي</a>
-    </h2>
-
-    <div class="alert" id="successAlert">تم حفظ التحديثات بنجاح وزيادة تفاصيل المزرعة!</div>
-
-    <div id="adminFarmsContainer">
-        <!-- يتم جلب حقول التعديل برمجياً -->
+    
+    <!-- حماية الأدمن: شاشة طلب كلمة السر حتى لا تفتح للزبون العادي -->
+    <div id="loginScreen">
+        <h3>🔒 لوحة التحكم محمية</h3>
+        <p style="color: #64748b; font-size: 13px; margin: 10px 0;">أدخل كلمة المرور الخاصة للوصول إلى تعديل المزارع:</p>
+        <input type="password" id="adminPassword" placeholder="كلمة المرور...">
+        <br>
+        <button onclick="checkPassword()">دخول</button>
+        <p id="errorMsg" style="color: red; font-size: 12px; margin-top: 10px;"></p>
     </div>
+
+    <!-- لوحة التحكم الحقيقية (تظهر فقط بعد إدخال كلمة السر الصح) -->
+    <div id="adminPanel">
+        <h2>
+            <span>⚙️ إدارة وتحديث المزارع</span>
+            <a href="index.html" class="back-link">← عرض الموقع</a>
+        </h2>
+
+        <div class="alert" id="successAlert">تم حفظ التحديثات والصور بنجاح!</div>
+        <div id="adminFarmsContainer"></div>
+    </div>
+
 </div>
 
 <script>
+    // كلمة المرور الخاصة بيك (تگدر تغيرها هنا)
+    const secretCode = "admin123";
+
+    function checkPassword() {
+        let pass = document.getElementById('adminPassword').value;
+        if(pass === secretCode) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadAdminPanel();
+        } else {
+            document.getElementById('errorMsg').innerText = "كلمة المرور غير صحيحة!";
+        }
+    }
+
     const defaultFarms = [
         {
             id: 1,
             name: "مزرعة الواحة الخضراء",
-            desc: "مساحة واسعة، مسبح مغطى، قاعات مكيفة مجهزة بالكامل، ومناطق ترفيهية للأطفال.",
+            desc: "مساحة واسعة، مسبح مغطى، قاعات مكيفة مجهزة بالكامل.",
             price: "150000",
             status: "available",
-            image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80",
-            features: ["مسبح مغطى", "قاعة مكيفة", "شواء خارجي"]
+            images: [
+                "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80"
+            ]
         },
         {
             id: 2,
             name: "مزرعة النخيل الفاخرة",
-            desc: "تصميم حديث، مساحات خضراء شاسعة، إضاءة ليلية مميزة، وأجواء عائلية هادئة.",
+            desc: "تصميم حديث، مساحات خضراء شاسعة وإضاءة ليلية مميزة.",
             price: "200000",
             status: "booked",
-            image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
-            features: ["مساحات شاسعة", "ألعاب أطفال", "جلسات نارية"]
+            images: [
+                "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80"
+            ]
         }
     ];
 
@@ -69,7 +107,7 @@
             box.innerHTML = `
                 <h3>تعديل: ${farm.name}</h3>
                 <div class="form-group" style="margin-top:10px;">
-                    <label>حالة المزرعة:</label>
+                    <label>حالة المزرعة (متوفرة أو محجوزة):</label>
                     <select id="status_${index}">
                         <option value="available" ${farm.status === 'available' ? 'selected' : ''}>🟢 متوفرة للحجز</option>
                         <option value="booked" ${farm.status === 'booked' ? 'selected' : ''}>🔴 محجوزة بالكامل</option>
@@ -84,8 +122,8 @@
                     <input type="text" id="price_${index}" value="${farm.price}">
                 </div>
                 <div class="form-group">
-                    <label>رابط الصورة (URL):</label>
-                    <input type="text" id="image_${index}" value="${farm.image}">
+                    <label>روابط الصور (ضع كل رابط سطر أو افصل بينها بفاصلة):</label>
+                    <textarea id="images_${index}" rows="3">${farm.images.join('\n')}</textarea>
                 </div>
                 <div class="form-group">
                     <label>الوصف التفصيلي:</label>
@@ -103,8 +141,11 @@
         farms[index].name = document.getElementById(`name_${index}`).value;
         farms[index].price = document.getElementById(`price_${index}`).value;
         farms[index].status = document.getElementById(`status_${index}`).value;
-        farms[index].image = document.getElementById(`image_${index}`).value;
         farms[index].desc = document.getElementById(`desc_${index}`).value;
+        
+        // تحويل النص المكتوب بالـ Textarea الخاص بالصور إلى مصفوفة (Array) روابط منفصلة
+        let rawImages = document.getElementById(`images_${index}`).value;
+        farms[index].images = rawImages.split('\n').map(img => img.trim()).filter(img => img !== "");
 
         localStorage.setItem('myFarms', JSON.stringify(farms));
 
@@ -112,8 +153,6 @@
         alertBox.style.display = 'block';
         setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
     }
-
-    window.onload = loadAdminPanel;
 </script>
 
 </body>
