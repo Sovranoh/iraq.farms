@@ -3,147 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة حجز المزارع الرسمية</title>
+    <title>دليل المزارع والاستراحات الفاخرة</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f8f9fa; color: #333; }
-        header { background-color: #2c3e50; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        header h1 { font-size: 18px; }
-        header p { font-size: 13px; }
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover; background-position: center; height: 200px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 15px;
-        }
-        .hero h2 { font-size: 20px; margin-bottom: 5px; }
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
-        .section-title { margin-bottom: 15px; font-size: 18px; color: #2c3e50; border-bottom: 2px solid #27ae60; display: inline-block; padding-bottom: 3px; }
+        body { background-color: #f4f7f6; color: #333; }
         
-        .farms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .farm-card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; display: flex; flex-direction: column; }
+        header { background: #1e293b; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 20px; }
+        .admin-link { background: #3b82f6; color: white; padding: 8px 15px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s; }
+        .admin-link:hover { background: #2563eb; }
 
-        /* الصورة الرئيسية */
-        .main-img-container { width: 100%; height: 170px; overflow: hidden; position: relative; }
-        .main-img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s ease; }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center; height: 260px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; padding: 0 20px;
+        }
+        .hero h2 { font-size: 28px; margin-bottom: 8px; }
+        .hero p { font-size: 15px; color: #cbd5e1; }
 
-        /* معرض الصور القابل للسحب بالموبايل (Swipeable Gallery) */
-        .image-gallery {
-            display: flex;
-            gap: 8px;
-            padding: 10px;
-            background: #f1f1f1;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-        .image-gallery::-webkit-scrollbar {
-            height: 4px;
-        }
-        .image-gallery::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 4px;
-        }
-        .image-gallery img {
-            width: 75px;
-            height: 55px;
-            object-fit: cover;
-            border-radius: 4px;
-            flex-shrink: 0;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.2s;
-        }
-        .image-gallery img:hover, .image-gallery img.active {
-            border-color: #27ae60;
-            transform: scale(1.05);
-        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .section-title { margin-bottom: 20px; font-size: 22px; color: #1e293b; border-right: 4px solid #10b981; padding-right: 10px; }
 
-        .farm-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .farm-content h3 { font-size: 17px; color: #2c3e50; margin-bottom: 6px; }
-        .farm-content p { font-size: 13px; color: #666; margin-bottom: 10px; }
-        .price { font-weight: bold; color: #27ae60; font-size: 14px; margin-bottom: 10px; }
-        .book-btn { background-color: #27ae60; color: white; border: none; padding: 10px; text-align: center; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 14px; display: block; transition: background 0.3s; }
-        .book-btn:hover { background-color: #219653; }
+        .farms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+        
+        /* كارت المزرعة العصري (Modern Card UI) */
+        .farm-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; transition: transform 0.3s ease; }
+        .farm-card:hover { transform: translateY(-5px); }
+
+        .main-img-container { width: 100%; height: 200px; overflow: hidden; position: relative; }
+        .main-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* شارة الحالة (متوفرة / محجوزة) */
+        .status-badge { position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; backdrop-filter: blur(4px); }
+        .status-available { background-color: rgba(16, 185, 129, 0.9); }
+        .status-booked { background-color: rgba(239, 68, 68, 0.9); }
+
+        .farm-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .farm-content h3 { font-size: 19px; color: #1e293b; margin-bottom: 8px; }
+        .farm-content p { font-size: 13px; color: #64748b; margin-bottom: 12px; line-height: 1.5; }
+
+        /* تفاصيل إضافية غير سطحية (المساحة، المرافق) */
+        .features-list { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .feature-tag { background: #f1f5f9; color: #475569; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 500; }
+
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-top: 1px solid #f1f5f9; padding-top: 12px; }
+        .price { font-weight: bold; color: #10b981; font-size: 16px; }
+        
+        .book-btn { background-color: #10b981; color: white; border: none; padding: 10px; text-align: center; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: block; transition: 0.3s; }
+        .book-btn:hover { background-color: #059669; }
+        .book-btn.disabled { background-color: #94a3b8; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>دليل المزارع الرسمي</h1>
-        <p>حجز آمن وموثوق</p>
+        <h1>🏡 منصة المزارع</h1>
+        <a href="admin.html" class="admin-link">⚙️ لوحة تحكم المزارع</a>
     </header>
 
     <div class="hero">
-        <h2>اختر أفضل المزارع والاستراحات</h2>
-        <p>تصفح الصور واحجز بكل سهولة</p>
+        <h2>استمتع بأفضل الأوقات في أجمل الاستراحات</h2>
+        <p>اختر مزرعتك المفضلة، تحقق من توفرها، واحجز بكل سهولة</p>
     </div>
 
     <div class="container">
-        <h3 class="section-title">المزارع المتاحة حالياً</h3>
-        
-        <div class="farms-grid" id="farmsContainer">
-            
-            <!-- مزرعة 1 -->
-            <div class="farm-card">
-                <div class="main-img-container">
-                    <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=500&q=80" alt="مزرعة" class="active-main-img">
-                </div>
-                <!-- صور قابلة للسحب باللمس على الموبايل -->
-                <div class="image-gallery">
-                    <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=500&q=80" class="active" onclick="changeImage(this)">
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" onclick="changeImage(this)">
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=500&q=80" onclick="changeImage(this)">
-                </div>
-                <div class="farm-content">
-                    <div>
-                        <h3>مزرعة الواحة الخضراء</h3>
-                        <p>مساحة واسعة، مسبح مغطى، وقاعات مكيفة للعائلات.</p>
-                    </div>
-                    <div>
-                        <div class="price">السعر: 150,000 د.ع / اليوم</div>
-                        <a href="checkout.html?farm=مزرعة%20الواحة%20الخضراء&price=150000" class="book-btn">حجز هذه المزرعة</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- مزرعة 2 -->
-            <div class="farm-card">
-                <div class="main-img-container">
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" alt="مزرعة" class="active-main-img">
-                </div>
-                <div class="image-gallery">
-                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" class="active" onclick="changeImage(this)">
-                    <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=500&q=80" onclick="changeImage(this)">
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=500&q=80" onclick="changeImage(this)">
-                </div>
-                <div class="farm-content">
-                    <div>
-                        <h3>مزرعة النخيل الفاخرة</h3>
-                        <p>تصميم حديث ومساحات خضراء شاسعة وإضاءة مميزة.</p>
-                    </div>
-                    <div>
-                        <div class="price">السعر: 200,000 د.ع / اليوم</div>
-                        <a href="checkout.html?farm=مزرعة%20النخيل%20الفاخرة&price=200000" class="book-btn">حجز هذه المزرعة</a>
-                    </div>
-                </div>
-            </div>
-
+        <h3 class="section-title">المزارع والاستراحات المتاحة</h3>
+        <div class="farms-grid" id="mainFarmsContainer">
+            <!-- سيتم تعبئة البيانات برمجياً من الـ LocalStorage أو العرض الافتراضي -->
         </div>
     </div>
 
     <script>
-        // دالة تبديل الصورة الرئيسية عند الضغط على أي صورة مصغرة
-        function changeImage(element) {
-            let card = element.closest('.farm-card');
-            let mainImg = card.querySelector('.active-main-img');
-            
-            // تغيير رابط الصورة الرئيسية لتطابق الصورة المختار
-            mainImg.src = element.src;
+        // بيانات افتراضية للمزارع إذا كانت فارغة
+        const defaultFarms = [
+            {
+                id: 1,
+                name: "مزرعة الواحة الخضراء",
+                desc: "مساحة واسعة، مسبح مغطى، قاعات مكيفة مجهزة بالكامل، ومناطق ترفيهية للأطفال.",
+                price: "150,000",
+                status: "available", // available أو booked
+                image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=600&q=80",
+                features: ["مسبح مغطى", "قاعة مكيفة", "شواء خارجي"]
+            },
+            {
+                id: 2,
+                name: "مزرعة النخيل الفاخرة",
+                desc: "تصميم حديث، مساحات خضراء شاسعة، إضاءة ليلية مميزة، وأجواء عائلية هادئة.",
+                price: "200,000",
+                status: "booked",
+                image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=600&q=80",
+                features: ["مساحات شاسعة", "ألعاب أطفال", "جلسات نارية"]
+            }
+        ];
 
-            // تحديث تحديد الصورة النشطة (Border)
-            card.querySelectorAll('.image-gallery img').forEach(img => img.classList.remove('active'));
-            element.classList.add('active');
+        function loadFarms() {
+            let farms = JSON.parse(localStorage.getItem('myFarms')) || defaultFarms;
+            let container = document.getElementById('mainFarmsContainer');
+            container.innerHTML = '';
+
+            farms.forEach(farm => {
+                let isAvailable = farm.status === 'available';
+                let statusText = isAvailable ? 'متوفرة للحجز' : 'محجوزة حالياً';
+                let statusClass = isAvailable ? 'status-available' : 'status-booked';
+                let btnClass = isAvailable ? 'book-btn' : 'book-btn disabled';
+                let btnText = isAvailable ? 'حجز هذه المزرعة' : 'المزرعة محجوزة';
+
+                let featuresHTML = farm.features ? farm.features.map(f => `<span class="feature-tag">${f}</span>`).join('') : '';
+
+                let card = document.createElement('div');
+                card.className = 'farm-card';
+                card.innerHTML = `
+                    <div class="main-img-container">
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                        <img src="${farm.image}" alt="${farm.name}">
+                    </div>
+                    <div class="farm-content">
+                        <div>
+                            <h3>${farm.name}</h3>
+                            <p>${farm.desc}</p>
+                            <div class="features-list">${featuresHTML}</div>
+                        </div>
+                        <div>
+                            <div class="price-row">
+                                <span style="font-size:12px; color:#64748b;">السعر اليومي:</span>
+                                <span class="price">${farm.price} د.ع</span>
+                            </div>
+                            <a href="checkout.html?farm=${encodeURIComponent(farm.name)}&price=${farm.price}" class="${btnClass}">${btnText}</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
         }
+
+        window.onload = loadFarms;
     </script>
 </body>
 </html>
