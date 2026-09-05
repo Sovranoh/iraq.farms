@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حجز المزارع - إتمام الحجز والدفع</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        .section-box {
+            background: #f9f9f9;
+            border: 1px solid #e1e8ed;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .section-box h3 {
+            font-size: 18px;
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        .info-row span:last-child {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .payment-info p {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .whatsapp-btn {
+            width: 100%;
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-align: center;
+        }
+        .whatsapp-btn:hover {
+            background-color: #1ebd59;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>تأكيد حجز المزرعة</h2>
+
+    <!-- تفاصيل المزرعة والحجز -->
+    <div class="section-box">
+        <h3>تفاصيل الحجز</h3>
+        <div class="info-row">
+            <span>اسم المزرعة:</span>
+            <span id="farmName">مزرعة الواحة الخضراء</span>
+        </div>
+        <div class="info-row">
+            <span>السعر الإجمالي:</span>
+            <span>150,000 د.ع</span>
+        </div>
+        <div class="info-row" style="color: #c0392b;">
+            <span>مبلغ العربون المطلوب:</span>
+            <span>50,000 د.ع</span>
+        </div>
+    </div>
+
+    <!-- معلومات الدفع اليدوي -->
+    <div class="section-box payment-info">
+        <h3>طرق تحويل العربون</h3>
+        <p>1. <strong>زين كاش (ZainCash):</strong> 07800000000 (بأسم عبدالرحمن شكر)</p>
+        <p>2. <strong>ماستر كارد / فاست باي:</strong> 5412 7500 1234 5678</p>
+        <p style="margin-top: 10px; font-size: 13px; color: #e67e22;">* يرجى تحويل مبلغ العربون أولاً والاحتفاظ بصورة الإيصال (الـسكرين شوت).</p>
+    </div>
+
+    <!-- إدخال معلومات الزبون -->
+    <div class="form-group">
+        <label for="customerName">الاسم الثلاثي:</label>
+        <input type="text" id="customerName" placeholder="أدخل اسمك الكريم هنا...">
+    </div>
+
+    <div class="form-group">
+        <label for="customerPhone">رقم الهاتف (للتواصل):</label>
+        <input type="tel" id="customerPhone" placeholder="مثال: 07700000000">
+    </div>
+
+    <!-- زر التأكيد -->
+    <button class="whatsapp-btn" id="confirmBooking">إرسال الإيصال وتأكيد الحجز عبر الواتساب</button>
+
+</div>
+
+<!-- كود الـ JavaScript للربط مع الواتساب -->
+<script>
+    document.getElementById('confirmBooking').addEventListener('click', function() {
+        let name = document.getElementById('customerName').value.trim();
+        let phone = document.getElementById('customerPhone').value.trim();
+        let farm = document.getElementById('farmName').innerText;
+        let deposit = "50,000 دينار عراقي";
+
+        // التحقق من الحقول إذا فارغة
+        if(name === "" || phone === "") {
+            alert("يرجى ملء الاسم ورقم الهاتف قبل المتابعة!");
+            return;
+        }
+
+        // رقم واتساب الخاص بك (استبدل الرقم برقمك مع رمز الدولة بدون علامة +)
+        let myWhatsAppNumber = "9647800000000"; 
+
+        // تجهيز الرسالة بشكل مرتب
+        let message = `مرحباً، أود تأكيد حجز مزرعة:%0a` +
+                      `- اسم المزرعة: ${farm}%0a` +
+                      `- مبلغ العربون: ${deposit}%0a` +
+                      `- اسم الزبون: ${name}%0a` +
+                      `- رقم الهاتف: ${phone}%0a` +
+                      `(مرفق مع هذه الرسالة صورة إيصال التحويل)`;
+
+        // فتح رابط الواتساب المباشر
+        let whatsappURL = `https://wa.me/${myWhatsAppNumber}?text=${message}`;
+        window.open(whatsappURL, '_blank');
+    });
+</script>
+
+</body>
+</html>
